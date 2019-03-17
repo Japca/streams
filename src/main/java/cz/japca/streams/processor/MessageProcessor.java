@@ -9,10 +9,10 @@ public interface MessageProcessor {
     String INPUT = "input";
     String OUTPUT = "output";
 
-    @Input
-    SubscribableChannel input();
+    @Input(INPUT)
+    SubscribableChannel messageInput();
 
-    @Output
+    @Output(OUTPUT)
     MessageChannel output();
 
 //    @Output

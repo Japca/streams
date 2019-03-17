@@ -1,10 +1,9 @@
 package cz.japca.streams.listener;
 
 import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.cloud.stream.messaging.Sink;
-import org.springframework.messaging.handler.annotation.Payload;
 
 import cz.japca.streams.model.DataMessage;
+import cz.japca.streams.processor.MessageProcessor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -16,8 +15,8 @@ public class Listener {
  //   @StreamListener(MessageProcessor.INPUT)
 //    @SendTo(MessageProcessor.OUTPUT)
 
-    @StreamListener(Sink.INPUT)
-    public void sendDataMessage(@Payload DataMessage dataMessage) {
+    @StreamListener(MessageProcessor.INPUT)
+    public void sendDataMessage(DataMessage dataMessage) {
         log.info("Message Received: {}", dataMessage);
     }
 
