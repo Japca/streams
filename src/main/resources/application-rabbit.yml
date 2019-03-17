@@ -1,0 +1,22 @@
+#spring:
+#  cloud:
+#    stream:
+#      bindings:
+#        input:
+#          destination: queue.log.messages
+#          binder: local_rabbit
+#          group: logMessageConsumers
+#        output:
+#          destination: queue.pretty.log.messages
+#          binder: local_rabbit
+#      binders:
+#        local_rabbit:
+#          type: rabbit
+#          default-candidate:false
+
+#server:
+#  port: 0
+#management:
+#  health:
+#    binders:
+#       enabled: true

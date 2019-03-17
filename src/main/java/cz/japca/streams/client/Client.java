@@ -21,7 +21,7 @@ public class Client {
 
 //    @SendTo(Processor.OUTPUT)
     public boolean send(DataMessage dataMessage) {
-        MessageChannel messageChannel = processor.messageInput();
+        MessageChannel messageChannel = processor.input();
         return messageChannel.send(MessageBuilder
                 .withPayload(dataMessage)
                 .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
