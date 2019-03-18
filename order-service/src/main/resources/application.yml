@@ -1,0 +1,31 @@
+spring:
+  #  rabbitmq:
+  #    host: localhost
+  #    port: 5672
+  #    username: quest
+  #    password: guest
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: orders-out
+        input:
+          destination: orders-in
+      rabbit:
+        bindings:
+          output:
+            producer:
+              exchangeType: direct
+          input:
+            producer:
+              exchangeType: direct
+      binders:
+        rabbit:
+          type: rabbit
+          environment:
+            rabbitmq:
+              host: localhost
+              port: 5672
+              username: quest
+              password: guest
+

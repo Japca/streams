@@ -1,41 +1,46 @@
-spring:
-#  application:
-#    name: account-service
-#  rabbitmq:
-#    host: localhost
-#    port: 5672
-  cloud:
-    stream:
-      bindings:
-        output:
-          binder: rabbit1
-          destination: orders-in
-        messageInput:
-          binder: rabbit1
-          consumer:
-            partitioned: true
-          destination: orders-out
-          group: account
-      rabbit:
-        bindings:
-          messageInput:
-            producer:
-              exchangeType: direct
-              routingKeyExpression: '"#"'
-      binders:
-        rabbit1:
-         type: rabbit
-         environment:
-         spring:
-          rabbitmq:
-           host: localhost
-           port: 5672
-           username: quest
-           password: guest
-#        kafka1:
-#          type: kafka
-#          defaultCandidate: false
-#          inheritEnvironment: false
-      default-binder: rabbit1
+
+
+#spring:
+##  application:
+##    name: account-service
+##  rabbitmq:
+##    host: localhost
+##    port: 5672
+#  cloud:
+#    stream:
+#      bindings:
+#        output:
+#          binder: rabbit
+#          destination: data-message-in
+#        input:
+#          binder: rabbit
+#          consumer:
+#            partitioned: true
+#          destination: data-message-out
+#          group: account
+#      rabbit:
+#        bindings:
+#          output:
+#            producer:
+#             exchangeType: direct
+#          input:
+#            producer:
+#              exchangeType: direct
+#              routingKeyExpression: '"#"'
+#      binders:
+#        rabbit1:
+#         type: rabbi
+#         environment:
+#         spring:
+#          rabbitmq:
+#           host: localhost
+#           port: 5672
+#           username: quest
+#           password: guest
+##        kafka1:
+##          type: kafka
+##          defaultCandidate: false
+##          inheritEnvironment: false
+#      default-binder: rabbit
 
 
