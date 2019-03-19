@@ -8,13 +8,13 @@ import org.springframework.messaging.SubscribableChannel;
 /**
  * Created by Jakub krhovják on 3/18/19.
  */
-public interface orderProcessor {
-    public  String ORDER_IN = "ordersIn";
+public interface OrderProcessor {
+    public  String ORDER_IN = "orderIn";
 
 
-    @Input("productOrdersIn")
-    SubscribableChannel ordersIn();
-    @Output("productOrdersOut")
-    MessageChannel ordersOut();
+    @Input("orderIn")
+    SubscribableChannel orderIn();
+    @Output("orderOut")
+    MessageChannel orderOut();
 
 }

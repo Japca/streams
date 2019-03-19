@@ -7,9 +7,9 @@ spring:
   cloud:
     stream:
       bindings:
-        output:
+        orderOut:
           destination: orders-out
-        input:
+        orderIn:
           destination: orders-in
       rabbit:
         bindings:
@@ -28,4 +28,5 @@ spring:
               port: 5672
               username: quest
               password: guest
-
+server:
+  port: 8081
