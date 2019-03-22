@@ -1,4 +1,4 @@
-package com.japca.order;
+package com.japca.shop;
 
 import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.Output;
