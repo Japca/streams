@@ -1,6 +1,8 @@
 package net.japca.shop;
 
 import org.springframework.cloud.stream.annotation.Input;
+import org.springframework.cloud.stream.annotation.Output;
+import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.SubscribableChannel;
 
 /**
@@ -8,13 +10,13 @@ import org.springframework.messaging.SubscribableChannel;
  */
 public interface OrderProcessor {
 
-    public static final String ORDER_IN = "orderIn";
-
+    String ORDER_SEND = "orderSend";
+    String ORDER_OUT = "orderOut";
 
     @Input
-    SubscribableChannel orderIn();
+    SubscribableChannel orderSend();
 
-//    @Output("orderOut")
-//    MessageChannel orderOut();
+    @Output
+    MessageChannel orderOut();
 
 }

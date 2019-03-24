@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.messaging.handler.annotation.SendTo;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,9 +20,12 @@ public class ShopService {
 	}
 
 
-	@StreamListener(OrderProcessor.ORDER_IN)
-	public void receiverOrder(Order order) {
+	@StreamListener(OrderProcessor.ORDER_SEND)
+	@SendTo(OrderProcessor.ORDER_OUT)
+	public Order receiverOrder(Order order) {
 		log.info("order received: {}", order);
+		order.setDescription(" Description changed");
+		return order;
 	}
 
 }

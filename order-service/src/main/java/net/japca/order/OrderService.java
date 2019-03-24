@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.MimeTypeUtils;
@@ -35,6 +36,11 @@ public class OrderService {
                 .build()));
 
         return "ok";
+    }
+
+    @StreamListener(OrderProcessor.ORDER_UPDATED)
+    public void receiveUpdatedOrder(Order order) {
+        log.info("Updated order received: {}", order);
     }
 
 }
