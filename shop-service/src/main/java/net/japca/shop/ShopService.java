@@ -19,7 +19,7 @@ public class ShopService {
 	}
 
 
-	@StreamListener(OrderProcessor.INPUT)
+	@StreamListener(OrderProcessor.ORDER_IN)
 	public void receiverOrder(Order order) {
 		log.info("order received: {}", order);
 	}
