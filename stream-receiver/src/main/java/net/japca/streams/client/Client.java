@@ -1,6 +1,6 @@
 package net.japca.streams.client;
 
-import com.japca.common.DataMessage;
+import net.japca.common.DataMessage;
 
 import net.japca.streams.processor.MessageProcessor;
 import org.springframework.beans.factory.annotation.Autowired;

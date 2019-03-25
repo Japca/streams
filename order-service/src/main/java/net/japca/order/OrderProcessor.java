@@ -10,6 +10,7 @@ import org.springframework.messaging.SubscribableChannel;
  */
 public interface OrderProcessor {
     String ORDER_UPDATED = "orderUpdated";
+    String ORDER_OUT = "orderOut";
 
     @Input
     SubscribableChannel orderUpdated();

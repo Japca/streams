@@ -1,6 +1,6 @@
 package net.japca.streams.listener;
 
-import com.japca.common.Order;
+import net.japca.common.Order;
 
 import net.japca.streams.processor.MessageProcessor;
 

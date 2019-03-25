@@ -28,4 +28,9 @@ public class ShopService {
 		return order;
 	}
 
+//	@ServiceActivator(inputChannel = OrderProcessor.ORDER_SEND + ".shop-service.errors")
+//	public void error(Order message) {
+//		System.out.println("Handling ERROR: " + message);
+//	}
+
 }
