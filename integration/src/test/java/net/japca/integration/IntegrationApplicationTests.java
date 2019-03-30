@@ -1,6 +1,5 @@
 package net.japca.integration;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import com.google.gson.Gson;
 
@@ -20,6 +19,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class IntegrationApplicationTests {
+
+
 
     @Autowired
     protected MockMvc mvc;

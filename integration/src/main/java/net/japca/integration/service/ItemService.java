@@ -15,7 +15,7 @@ public class ItemService {
 
     @ServiceActivator(inputChannel = "itemService.channel")
     public void processItem(Message<?> message) {
-      log.info("Item processed: {}", message.getPayload());
+      log.info("Item processed: {}", message);
     }
 
 }
