@@ -26,7 +26,7 @@ public class IntegrationApplicationTests {
     protected MockMvc mvc;
 
     @Test
-    public void getBenefitProgramType() throws Exception {
+    public void test() throws Exception {
         Item item = new Item().setId(1L).setDescription("Test description").setName("Test name");
 
         mvc.perform(MockMvcRequestBuilders.post("/")

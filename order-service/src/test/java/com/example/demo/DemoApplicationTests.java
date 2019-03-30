@@ -22,7 +22,7 @@ public class DemoApplicationTests {
     protected MockMvc mvc;
 
     @Test
-    public void getBenefitProgramType() throws Exception {
+    public void tetRedis() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/redis"))
                 .andExpect(content().string("ok"));
 
