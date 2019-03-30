@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.integration.config.EnableIntegration;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootApplication
 @EnableConfigurationProperties(OrderServiceProperties.class)
 @EnableBinding({OrderProcessor.class})
+@EnableIntegration
 public class OrderService {
 
     public static void main(String[] args) {
