@@ -1,6 +1,7 @@
 package net.japca.integration.service;
 
 import org.springframework.integration.annotation.Gateway;
+import org.springframework.integration.annotation.GatewayHeader;
 import org.springframework.integration.annotation.MessagingGateway;
 
 /**
@@ -10,6 +11,6 @@ import org.springframework.integration.annotation.MessagingGateway;
 @MessagingGateway
 public interface IntegrationGateway {
 
-    @Gateway(requestChannel = "restInput.chanel")
+    @Gateway(requestChannel = "restInput.chanel", headers = {@GatewayHeader( name="secretKey", value ="tajny" )} )
     <T> void process(T object);
 }

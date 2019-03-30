@@ -13,9 +13,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ItemService {
 
+//    @Filter(inputChannel = "filter.channel", outputChannel = "itemService.channel")
+
+
     @ServiceActivator(inputChannel = "itemService.channel")
     public void processItem(Message<?> message) {
-      log.info("Item processed: {}", message);
+        log.info("Item processed: {}", message);
+        message.getHeaders().forEach((key, value) -> {
+            log.info("{} : {}", key, value);
+        });
+
     }
 
 }
