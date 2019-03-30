@@ -11,6 +11,7 @@ import org.springframework.integration.annotation.MessagingGateway;
 @MessagingGateway
 public interface RedisGateway {
 
+
     @Gateway(requestChannel = "orderReceivedChannel")
     void publish(Order order);
 

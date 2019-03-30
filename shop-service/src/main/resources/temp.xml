@@ -10,25 +10,25 @@
      http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <int-redis:queue-inbound-channel-adapter id="event-inbound-channel-adapter"
-                                             channel="eventChannelJson" queue="my-event-queue"
+                                             channel="fromRedisChannel" queue="my-event-queue"
                                              serializer="serializer" auto-startup="true"
                                              connection-factory="redisConnectionFactory"/>
 
-    <int:channel id="eventChannelJson"/>
+    <!--<int:channel id="eventChannelJson"/>-->
 
-    <int:channel id="eventChannel">
-        <int:queue/>
-    </int:channel>
+    <!--<int:channel id="eventChannel">-->
+        <!--<int:queue/>-->
+    <!--</int:channel>-->
 
     <bean id="serializer" class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
 
-    <int:json-to-object-transformer input-channel="eventChannelJson"
-                                    output-channel="eventChannel"
-                                    type="net.japca.common.Order"/>
+    <!--<int:json-to-object-transformer input-channel="eventChannelJson"-->
+                                    <!--output-channel="eventChannel"-->
+                                    <!--type="net.japca.common.Order"/>-->
 
-    <int:service-activator input-channel="eventChannel" ref="RedisConsumer"
-                           method="process">
-        <int:poller fixed-delay="2" time-unit="SECONDS" max-messages-per-poll="500"/>
-    </int:service-activator>
+    <!--<int:service-activator input-channel="eventChannel" ref="RedisConsumer"-->
+                           <!--method="process">-->
+        <!--<int:poller fixed-delay="2" time-unit="SECONDS" max-messages-per-poll="500"/>-->
+    <!--</int:service-activator>-->
 
 </beans>
