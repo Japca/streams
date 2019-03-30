@@ -9,6 +9,7 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,10 +27,10 @@ public class TestController {
     @Autowired
     private RedisGateway redisGateway;
 
-    @GetMapping("/stream")
-    public String sendStream() {
+    @GetMapping("/rabbit")
+    public String sendStream(@RequestParam int count) {
         orderProcessor.orderOut().send((MessageBuilder
-                .withPayload(new Order("Order stream", 3))
+                .withPayload(new Order("Order stream", count))
                 .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
                 .build()));
 

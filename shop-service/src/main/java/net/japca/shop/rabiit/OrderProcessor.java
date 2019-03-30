@@ -1,4 +1,4 @@
-package net.japca.shop;
+package net.japca.shop.rabiit;
 
 import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.Output;

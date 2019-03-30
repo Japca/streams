@@ -20,7 +20,7 @@ import org.springframework.messaging.MessageChannel;
  * Created by Jakub krhovják on 3/30/19.
  */
 @Configuration
-@ConditionalOnProperty(value = "redis.enabled", matchIfMissing = false)
+@ConditionalOnProperty(value = "redis.enabled")
 public class RedisConfiguration {
 
     @Bean

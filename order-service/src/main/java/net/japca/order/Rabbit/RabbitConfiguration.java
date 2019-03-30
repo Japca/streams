@@ -2,6 +2,7 @@ package net.japca.order.Rabbit;
 
 import net.japca.common.Order;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @EnableBinding({OrderProcessor.class})
 public class RabbitConfiguration {
 
+    @ConditionalOnProperty(value = "rabbit.polling.enabled")
     @Bean
     @InboundChannelAdapter(value = OrderProcessor.ORDER_OUT, poller = @Poller(fixedRate = "1000", maxMessagesPerPoll = "1"))
     public MessageSource<Order> ordersSource() {
