@@ -34,8 +34,10 @@ public class IntegrationConfiguration {
     @Bean
     public HeaderFilter headerFilter() {
         HeaderFilter headerFilter = new HeaderFilter("secretKey");
-        headerFilter.setComponentName("processItem");
-        return headerFilter;
+           return headerFilter;
     }
+
+
+
 
 }
