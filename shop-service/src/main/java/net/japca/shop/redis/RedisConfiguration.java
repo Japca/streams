@@ -1,5 +1,6 @@
 package net.japca.shop.redis;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
@@ -18,9 +19,8 @@ import org.springframework.messaging.MessageChannel;
 /**
  * Created by Jakub krhovják on 3/30/19.
  */
-
-//@ImportResource("classpath:temp.xml")
 @Configuration
+@ConditionalOnProperty(value = "redis.enabled", matchIfMissing = false)
 public class RedisConfiguration {
 
     @Bean

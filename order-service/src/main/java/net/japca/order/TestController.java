@@ -1,6 +1,7 @@
 package net.japca.order;
 
 import net.japca.common.Order;
+import net.japca.order.Rabbit.OrderProcessor;
 import net.japca.order.redis.RedisGateway;
 
 import org.springframework.beans.factory.annotation.Autowired;

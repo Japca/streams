@@ -2,6 +2,7 @@ package net.japca.order.redis;
 
 import net.japca.common.Order;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
@@ -23,7 +24,6 @@ import java.util.Random;
  * Created by Jakub krhovják on 3/30/19.
  */
 
-//@ImportResource("classpath:temp.xml")
 @Configuration
 public class RedisConfiguration {
 
@@ -36,6 +36,7 @@ public class RedisConfiguration {
     public MessageChannel toRedisChannel() {
         return new DirectChannel();
     }
+
 
     @Transformer(inputChannel = "orderReceivedChannel", outputChannel = "toRedisChannel")
     @Bean
@@ -53,6 +54,7 @@ public class RedisConfiguration {
     }
 
 
+    @ConditionalOnProperty(value = "redis.enabled")
     @InboundChannelAdapter(value = "orderReceivedChannel", poller = @Poller(fixedRate = "1000", maxMessagesPerPoll = "1"))
     @Bean
     public MessageSource<Order> ordersSource() {

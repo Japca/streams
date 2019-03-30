@@ -1,4 +1,4 @@
-package net.japca.order;
+package net.japca.order.Rabbit;
 
 import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.Output;
