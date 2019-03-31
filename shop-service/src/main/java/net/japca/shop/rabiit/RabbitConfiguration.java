@@ -22,11 +22,11 @@ public class RabbitConfiguration {
     @StreamListener(OrderProcessor.ORDER_SEND)
     @SendTo(OrderProcessor.ORDER_OUT)
     public Order receiverOrder(Order order) {
-        log.info("order received: {}", order);
+        log.info("order received from rabbit: {}", order);
         order.setDescription(" Description changed");
-        if(order.getCount() == 3) {
-            throw new RuntimeException("Exception");
-        }
+//        if(order.getCount() == 3) {
+//            throw new RuntimeException("Exception");
+//        }
         return order;
     }
 

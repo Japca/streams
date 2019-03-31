@@ -34,8 +34,7 @@ public class TestController {
     private RedisGateway redisGateway;
 
     @GetMapping("/rabbit")
-//    @InboundChannelAdapter(value = "orderReceivedChannel", poller = @Poller(fixedRate = "1000", maxMessagesPerPoll = "1"))
-    public String sendStream(@RequestParam Integer count) {
+    public  String voidsendStream(@RequestParam Integer count) {
         count = count == null ?  new Random().nextInt(10) : count;
         orderProcessor.orderOut().send((MessageBuilder
                 .withPayload(new Order("Order stream", count))
@@ -46,10 +45,10 @@ public class TestController {
     }
 
     @GetMapping("/redis")
-    @InboundChannelAdapter(value = "orderReceivedChannel", poller = @Poller(fixedRate = "2000", maxMessagesPerPoll = "1"))
+    @InboundChannelAdapter(value = "orderReceivedChannel", poller = @Poller(fixedRate = "2000"))
     public Order sendRedis() {
         Order order = new Order("Order redis Gateway",  new Random().nextInt(100));
-        redisGateway.publish(new Order("Order redis InboundChannel",  random.nextInt(100)));
+        redisGateway.publish(new Order("Order redis InboundChannel",  new Random().nextInt(100)));
         log.info("Published to redis: {}", order);
         return order;
     }
