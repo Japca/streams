@@ -1,6 +1,5 @@
 package net.japca.shop.redis;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
@@ -11,6 +10,7 @@ import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.annotation.Transformer;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.channel.QueueChannel;
+import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.config.ServiceActivatorFactoryBean;
 import org.springframework.integration.json.JsonToObjectTransformer;
 import org.springframework.integration.redis.inbound.RedisInboundChannelAdapter;
@@ -20,7 +20,8 @@ import org.springframework.messaging.MessageChannel;
  * Created by Jakub krhovják on 3/30/19.
  */
 @Configuration
-@ConditionalOnProperty(value = "redis.enabled")
+@EnableIntegration
+//@ConditionalOnProperty(value = "redis.enabled")
 public class RedisConfiguration {
 
     @Bean
@@ -38,7 +39,7 @@ public class RedisConfiguration {
         return new QueueChannel();
     }
 
-    @InboundChannelAdapter(channel = "fromRedisChannel" )
+    @InboundChannelAdapter(channel = "fromRedisChannel")
     @Bean
     public RedisInboundChannelAdapter redisInboundChannelAdapter() {
         RedisInboundChannelAdapter redisInboundChannelAdapter = new RedisInboundChannelAdapter(new JedisConnectionFactory());
@@ -62,7 +63,5 @@ public class RedisConfiguration {
         serviceActivatorFactoryBean.setTargetMethodName("process");
         return serviceActivatorFactoryBean;
     }
-
-
 
 }

@@ -56,7 +56,6 @@ public class RedisConfiguration {
 
     @ConditionalOnProperty(value = "redis.enabled")
     @InboundChannelAdapter(value = "orderReceivedChannel", poller = @Poller(fixedRate = "1000", maxMessagesPerPoll = "1"))
-    @Bean
     public MessageSource<Order> ordersSource() {
         Random random = new Random();
         return () -> new GenericMessage<>(new Order("Order redis" +  random.nextInt(100), random.nextInt(10)));
