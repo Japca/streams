@@ -12,6 +12,6 @@ public class RedisConsumer {
 
     public void process(Order order) {
         log.info("Order received from redis: {}", order);
-    }
+        }
 
 }
