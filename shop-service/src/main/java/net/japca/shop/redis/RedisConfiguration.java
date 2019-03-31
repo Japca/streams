@@ -1,5 +1,8 @@
 package net.japca.shop.redis;
 
+import net.japca.common.Order;
+
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
@@ -13,7 +16,7 @@ import org.springframework.integration.channel.QueueChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.config.ServiceActivatorFactoryBean;
 import org.springframework.integration.json.JsonToObjectTransformer;
-import org.springframework.integration.redis.inbound.RedisInboundChannelAdapter;
+import org.springframework.integration.redis.inbound.RedisQueueMessageDrivenEndpoint;
 import org.springframework.messaging.MessageChannel;
 
 /**
@@ -21,12 +24,13 @@ import org.springframework.messaging.MessageChannel;
  */
 @Configuration
 @EnableIntegration
-//@ConditionalOnProperty(value = "redis.enabled")
+@ConditionalOnProperty(value = "redis.enabled")
+//@ImportResource("classpath:temp.xml")
 public class RedisConfiguration {
 
     @Bean
     public MessageChannel fromRedisChannel() {
-        return new DirectChannel();
+        return new QueueChannel();
     }
 
     @Bean
@@ -36,26 +40,31 @@ public class RedisConfiguration {
 
     @Bean
     public MessageChannel eventChannel() {
-        return new QueueChannel();
+        return new DirectChannel();
     }
 
-    @InboundChannelAdapter(channel = "fromRedisChannel")
     @Bean
-    public RedisInboundChannelAdapter redisInboundChannelAdapter() {
-        RedisInboundChannelAdapter redisInboundChannelAdapter = new RedisInboundChannelAdapter(new JedisConnectionFactory());
-        redisInboundChannelAdapter.setSerializer(new StringRedisSerializer());
-        redisInboundChannelAdapter.setTopics("order-queue");
+    public StringRedisSerializer serializer() {
+        return new StringRedisSerializer();
+    }
+
+    @InboundChannelAdapter(channel = "fromRedisChannel", poller = @Poller(fixedRate = "10000",  maxMessagesPerPoll = "1"))
+    @Bean
+    public RedisQueueMessageDrivenEndpoint redisInboundChannelAdapter() {
+        RedisQueueMessageDrivenEndpoint redisInboundChannelAdapter = new RedisQueueMessageDrivenEndpoint("order-queue", new JedisConnectionFactory());
+        redisInboundChannelAdapter.setSerializer(serializer());
         redisInboundChannelAdapter.setOutputChannel(transformChanel());
         return redisInboundChannelAdapter;
     }
 
+
     @Transformer(inputChannel = "transformChanel", outputChannel = "eventChannel")
     @Bean
     public JsonToObjectTransformer objectToJsonTransformer() {
-        return new JsonToObjectTransformer();
+        return new JsonToObjectTransformer(Order.class);
     }
 
-    @ServiceActivator(inputChannel = "eventChannel", poller = @Poller(fixedRate = "2000", maxMessagesPerPoll = "1"))
+    @ServiceActivator(inputChannel = "eventChannel")
     @Bean
     public ServiceActivatorFactoryBean redisConsumer() {
         ServiceActivatorFactoryBean serviceActivatorFactoryBean = new ServiceActivatorFactoryBean();
