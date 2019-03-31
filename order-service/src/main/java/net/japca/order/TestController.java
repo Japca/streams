@@ -46,12 +46,12 @@ public class TestController {
     }
 
     @GetMapping("/redis")
-    @InboundChannelAdapter(value = "toRedisChannel", poller = @Poller(fixedRate = "2000", maxMessagesPerPoll = "1"))
-    public String sendRedis() {
-        Order order = new Order("Order redis",  new Random().nextInt(10));
-        redisGateway.publish(new Order("Order redis",  random.nextInt(100)));
+    @InboundChannelAdapter(value = "orderReceivedChannel", poller = @Poller(fixedRate = "2000", maxMessagesPerPoll = "1"))
+    public Order sendRedis() {
+        Order order = new Order("Order redis Gateway",  new Random().nextInt(100));
+        redisGateway.publish(new Order("Order redis InboundChannel",  random.nextInt(100)));
         log.info("Published to redis: {}", order);
-        return "ok";
+        return order;
     }
 
 }

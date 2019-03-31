@@ -3,9 +3,11 @@ package net.japca.order.redis;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.integration.annotation.Transformer;
 import org.springframework.integration.channel.DirectChannel;
+import org.springframework.integration.json.ObjectToJsonTransformer;
 import org.springframework.integration.redis.outbound.RedisQueueOutboundChannelAdapter;
 import org.springframework.messaging.MessageChannel;
 
@@ -15,6 +17,11 @@ import org.springframework.messaging.MessageChannel;
 
 @Configuration
 public class RedisConfiguration {
+
+    @Bean
+    public MessageChannel orderReceivedChannel() {
+        return new DirectChannel();
+    }
 
     @Bean
     public MessageChannel toRedisChannel() {
@@ -27,8 +34,14 @@ public class RedisConfiguration {
     public RedisQueueOutboundChannelAdapter redisQueueOutboundChannelAdapter() {
         RedisQueueOutboundChannelAdapter queueOutboundChannelAdapter =
                 new RedisQueueOutboundChannelAdapter("order-queue", new JedisConnectionFactory());
-        queueOutboundChannelAdapter.setSerializer(new GenericJackson2JsonRedisSerializer());
+        queueOutboundChannelAdapter.setSerializer(new StringRedisSerializer());
         return  queueOutboundChannelAdapter;
+    }
+
+    @Transformer(inputChannel = "orderReceivedChannel", outputChannel = "toRedisChannel")
+    @Bean
+    public ObjectToJsonTransformer objectToJsonTransformer() {
+        return new ObjectToJsonTransformer();
     }
 
 }
