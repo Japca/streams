@@ -5,8 +5,6 @@ import net.japca.order.Rabbit.OrderProcessor;
 import net.japca.order.redis.RedisGateway;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.integration.annotation.InboundChannelAdapter;
-import org.springframework.integration.annotation.Poller;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.MimeTypeUtils;
@@ -34,23 +32,26 @@ public class TestController {
     private RedisGateway redisGateway;
 
     @GetMapping("/rabbit")
-    public  String voidsendStream(@RequestParam Integer count) {
-        count = count == null ?  new Random().nextInt(10) : count;
+    public  String sendStream(@RequestParam Integer count) {
+        count = count == null ?  new Random().nextInt(100) : count;
+        Order order = new Order("Order stream", count);
         orderProcessor.orderOut().send((MessageBuilder
-                .withPayload(new Order("Order stream", count))
+                .withPayload(order)
                 .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
                 .build()));
+
+        log.info("Published to Rabbit: {}", order);
 
         return "ok";
     }
 
     @GetMapping("/redis")
-    @InboundChannelAdapter(value = "orderReceivedChannel", poller = @Poller(fixedRate = "2000"))
-    public Order sendRedis() {
+    public String sendRedis() {
         Order order = new Order("Order redis Gateway",  new Random().nextInt(100));
-        redisGateway.publish(new Order("Order redis InboundChannel",  new Random().nextInt(100)));
-        log.info("Published to redis: {}", order);
-        return order;
+        redisGateway.publish(order);
+        log.info("Published to Redis: {}", order);
+
+        return "ok";
     }
 
 }
