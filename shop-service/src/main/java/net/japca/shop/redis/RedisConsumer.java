@@ -10,8 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RedisConsumer {
 
-    public void process(Order order) {
+    public Order process(Order order) {
         log.info("Order received from redis: {}", order);
-        }
+        return order;
+    }
 
 }

@@ -21,6 +21,11 @@ import org.springframework.messaging.MessageChannel;
 public class RedisConfiguration {
 
     @Bean
+    public RedisConsumer redisConsumer() {
+        return new RedisConsumer();
+    }
+
+    @Bean
     public MessageChannel eventChannel() {
         return new DirectChannel();
     }
@@ -36,9 +41,9 @@ public class RedisConfiguration {
 
     @ServiceActivator(inputChannel = "eventChannel")
     @Bean
-    public ServiceActivatorFactoryBean redisConsumer() {
+    public ServiceActivatorFactoryBean redisConsumerFactoryBean() {
         ServiceActivatorFactoryBean serviceActivatorFactoryBean = new ServiceActivatorFactoryBean();
-        serviceActivatorFactoryBean.setTargetObject(new RedisConsumer());
+        serviceActivatorFactoryBean.setTargetObject(redisConsumer());
         serviceActivatorFactoryBean.setTargetMethodName("process");
         return serviceActivatorFactoryBean;
     }

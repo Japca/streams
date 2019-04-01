@@ -1,8 +1,5 @@
 package net.japca.shop;
 
-import net.japca.shop.flux.RequestHandler;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.integration.config.EnableIntegration;
@@ -19,9 +16,6 @@ public class ShopService {
 	public static void main(String[] args) {
 		SpringApplication.run(ShopService.class, args);
 	}
-
-	@Autowired
-	RequestHandler requestHandler;
 
 //	@GetMapping(produces = MediaType.TEXT_EVENT_STREAM, value = "/orders")
 //	public Mono<ServerResponse> orders(ServerRequest request) {
