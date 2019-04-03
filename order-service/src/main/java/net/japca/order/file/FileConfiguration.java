@@ -11,10 +11,13 @@ import org.springframework.integration.annotation.Transformer;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.core.MessageSource;
 import org.springframework.integration.file.FileReadingMessageSource;
+import org.springframework.integration.file.FileWritingMessageHandler;
 import org.springframework.integration.file.filters.SimplePatternFileListFilter;
+import org.springframework.integration.file.support.FileExistsMode;
 import org.springframework.integration.file.transformer.FileToStringTransformer;
 import org.springframework.integration.redis.outbound.RedisQueueOutboundChannelAdapter;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.MessageHandler;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -30,10 +33,12 @@ public class FileConfiguration {
         return new DirectChannel();
     }
 
+
     @Bean
-    public MessageChannel transformChannel() {
+    public MessageChannel redisFileOutputChannel() {
         return new DirectChannel();
     }
+
 
     @Bean
     public LogService logService() {
@@ -41,7 +46,7 @@ public class FileConfiguration {
     }
 
     @Bean
-    @InboundChannelAdapter(channel = "fileInputChannel", poller = @Poller(fixedDelay = "1000"))
+    @InboundChannelAdapter(channel = "fileInputChannel", poller = @Poller(fixedDelay = "5000"))
     public MessageSource<File> fileReadingMessageSource() throws URISyntaxException {
         FileReadingMessageSource source = new FileReadingMessageSource();
         source.setDirectory(new File("order-service/src/main/resources"));
@@ -49,13 +54,25 @@ public class FileConfiguration {
         return source;
     }
 
-    @Transformer(inputChannel = "fileInputChannel", outputChannel = "transformChannel")
+    @Bean
+    @ServiceActivator(inputChannel = "fileInputChannel")
+    public MessageHandler processedFiles() {
+        FileWritingMessageHandler handler = new FileWritingMessageHandler(new File("order-service/src/main/resources/out"));
+        handler.setFileExistsMode(FileExistsMode.APPEND);
+//        handler.setFileNameGenerator();
+//        handler.setDeleteSourceFiles(true);
+        handler.setExpectReply(false);
+        return handler;
+    }
+
+
+    @Transformer(inputChannel = "fileInputChannel", outputChannel = "redisFileOutputChannel")
     @Bean
     public FileToStringTransformer fileToStringTransformer() {
         return new FileToStringTransformer();
     }
 
-    @ServiceActivator(inputChannel = "transformChannel")
+    @ServiceActivator(inputChannel = "redisFileOutputChannel")
     @Bean
     public RedisQueueOutboundChannelAdapter redisFileOutBoundAdapter() {
         RedisQueueOutboundChannelAdapter queueOutboundChannelAdapter =
@@ -64,14 +81,7 @@ public class FileConfiguration {
         return  queueOutboundChannelAdapter;
     }
 
-//    @Bean
-//    @ServiceActivator(inputChannel = FILE_CHANNEL_SOURCE)
-//    public MessageHandler processedFiles() {
-//        FileWritingMessageHandler handler = new FileWritingMessageHandler(new File(outputDir));
-//        handler.setFileExistsMode(FileExistsMode.FAIL);
-//        handler.setDeleteSourceFiles(true);
-//        handler.setExpectReply(false);
-//        return handler;
-//    }
+
+
 
 }
