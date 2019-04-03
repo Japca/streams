@@ -21,6 +21,7 @@ import org.springframework.messaging.MessageHandler;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.util.Random;
 
 /**
  * Created by Jakub krhovják on 4/1/19.
@@ -59,7 +60,7 @@ public class FileConfiguration {
     public MessageHandler processedFiles() {
         FileWritingMessageHandler handler = new FileWritingMessageHandler(new File("order-service/src/main/resources/out"));
         handler.setFileExistsMode(FileExistsMode.APPEND);
-//        handler.setFileNameGenerator();
+        handler.setFileNameGenerator(message -> "transfer " + new Random().nextInt(100000));
 //        handler.setDeleteSourceFiles(true);
         handler.setExpectReply(false);
         return handler;
