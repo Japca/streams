@@ -4,8 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.integration.annotation.InboundChannelAdapter;
-import org.springframework.integration.annotation.Poller;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.annotation.Transformer;
 import org.springframework.integration.channel.DirectChannel;
@@ -47,7 +45,7 @@ public class FileConfiguration {
     }
 
     @Bean
-    @InboundChannelAdapter(channel = "fileInputChannel", poller = @Poller(fixedDelay = "5000"))
+//    @InboundChannelAdapter(channel = "fileInputChannel", poller = @Poller(fixedDelay = "5000"))
     public MessageSource<File> fileReadingMessageSource() throws URISyntaxException {
         FileReadingMessageSource source = new FileReadingMessageSource();
         source.setDirectory(new File("order-service/src/main/resources"));
