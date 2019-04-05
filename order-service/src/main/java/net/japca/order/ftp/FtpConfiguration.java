@@ -2,22 +2,20 @@ package net.japca.order.ftp;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.integration.annotation.InboundChannelAdapter;
-import org.springframework.integration.annotation.Poller;
+import org.springframework.expression.common.LiteralExpression;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.channel.DirectChannel;
-import org.springframework.integration.config.ServiceActivatorFactoryBean;
-import org.springframework.integration.ftp.inbound.FtpInboundFileSynchronizer;
-import org.springframework.integration.ftp.inbound.FtpInboundFileSynchronizingMessageSource;
+import org.springframework.integration.ftp.outbound.FtpMessageHandler;
 import org.springframework.integration.ftp.session.DefaultFtpSessionFactory;
 import org.springframework.messaging.MessageChannel;
 
-import java.io.File;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Created by Jakub krhovják on 4/4/19.
  */
 
+@Slf4j
 @Configuration
 public class FtpConfiguration {
 
@@ -37,24 +35,11 @@ public class FtpConfiguration {
     }
 
     @Bean
-    @InboundChannelAdapter(channel = "ftpChannel", poller = @Poller(fixedDelay = "1000"))
-    public FtpInboundFileSynchronizingMessageSource ftpInboundAdapter() {
-        FtpInboundFileSynchronizer ftpInboundFileSynchronizer = new FtpInboundFileSynchronizer(defaultFtpSessionFactory());
-//        ftpInboundFileSynchronizer.setRemoteDirectory("/");
-
-        FtpInboundFileSynchronizingMessageSource ftpInboundAdapter =
-                new FtpInboundFileSynchronizingMessageSource(ftpInboundFileSynchronizer);
-        ftpInboundAdapter.setLocalDirectory(new File("order-service/src/main/resources/from-ftp"));
-        return ftpInboundAdapter;
-    }
-
-    @Bean
     @ServiceActivator(inputChannel = "ftpChannel")
-    public ServiceActivatorFactoryBean printServiceActivator() {
-        ServiceActivatorFactoryBean serviceActivatorFactoryBean = new ServiceActivatorFactoryBean();
-        serviceActivatorFactoryBean.setTargetObject(new FtpService());
-        serviceActivatorFactoryBean.setTargetMethodName("print");
-        return serviceActivatorFactoryBean;
+    public FtpMessageHandler ftpOutboundHandler() {
+        FtpMessageHandler ftpOutboundHandler = new FtpMessageHandler(defaultFtpSessionFactory());
+        ftpOutboundHandler.setRemoteDirectoryExpression(new LiteralExpression(""));
+        ftpOutboundHandler.setFileNameGenerator(message -> String.valueOf(message.getHeaders().get("fileName")));
+        return ftpOutboundHandler;
     }
-
 }

@@ -1,4 +1,4 @@
-package net.japca.order.ftp;
+package net.japca.shop.ftp;
 
 import java.io.File;
 
