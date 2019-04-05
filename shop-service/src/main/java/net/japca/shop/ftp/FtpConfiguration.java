@@ -40,6 +40,7 @@ public class FtpConfiguration {
     @Bean
     @InboundChannelAdapter(channel = "ftpChannel", poller = @Poller(fixedDelay = "1000"))
     public FtpInboundFileSynchronizingMessageSource ftpInboundAdapter() {
+  //      FtpOutboundGateway ftpOutboundGateway = new FtpOutboundGateway(defaultFtpSessionFactory(), "get", "payload"); an alternative
         FtpInboundFileSynchronizer ftpInboundFileSynchronizer = new FtpInboundFileSynchronizer(defaultFtpSessionFactory());
        ftpInboundFileSynchronizer.setRemoteDirectoryExpression(new LiteralExpression(""));
 
